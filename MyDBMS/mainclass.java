@@ -15,9 +15,9 @@ public class mainclass {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            System.out.println("1. create db");
+            System.out.println("\n\n1. create db");
             System.out.println("2. use db");
-            System.out.println("0. exit");
+            System.out.println("0. exit\n\n");
 
             int choice = sc.nextInt();
             sc.nextLine();
@@ -139,3 +139,4 @@ public class mainclass {
         }
     }
 }
+
