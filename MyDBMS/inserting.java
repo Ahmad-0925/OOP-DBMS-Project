@@ -47,25 +47,29 @@ public class inserting implements database {
                         row += query.charAt(j);
                         j++;
                     }
+                    if (j < query.length()) {
+                        String[] values = row.split(",");
 
-                    String[] values = row.split(",");
+                        for (int k = 0; k < values.length; k++) {
+                            values[k] = values[k].trim();
 
-                    for (int k = 0; k < values.length; k++) {
-                        values[k] = values[k].trim();
-
-                        if (values[k].startsWith("'") && values[k].endsWith("'")) {
-                            String temp = "";
-                            for (int x = 1; x < values[k].length() - 1; x++) {
-                                temp += values[k].charAt(x);
+                            if (values[k].startsWith("'") && values[k].endsWith("'")) {
+                                String temp = "";
+                                for (int x = 1; x < values[k].length() - 1; x++) {
+                                    temp += values[k].charAt(x);
+                                }
+                                values[k] = temp;
                             }
-                            values[k] = temp;
                         }
-                    }
 
-                    allRows.add(values);
-                    i = j;
+                        allRows.add(values);
+                        i = j + 1;
+                    } else {
+                        break;
+                    }
+                } else {
+                    i++;
                 }
-                i++;
             }
 
             String metapath = dbpath.getPath() + "\\" + tablename + ".meta.txt";
