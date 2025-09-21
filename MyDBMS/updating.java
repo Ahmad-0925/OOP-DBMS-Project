@@ -6,40 +6,57 @@ import java.nio.file.*;
 
 public class updating implements database {
 
-	String spacecleaner(String query) {
-	    query = query.trim();
-	    String cleaned = "";
-	    boolean lastspace = false;
+    String spacecleaner(String query) {
+        query = query.trim();
+        String cleaned = "";
+        boolean lastspace = false;
 
-	    for (int i = 0; i < query.length(); i++) {
-	        char ch = query.charAt(i);
-	        
-	        if (ch == ' ') {
-	            if (!lastspace) {
-	                cleaned += ch;
-	                lastspace = true;
-	            }
-	        } else {
-	            cleaned += ch;
-	            lastspace = false;
-	        }
-	    }
+        for (int i = 0; i < query.length(); i++) {
+            char ch = query.charAt(i);
+            
+            if (ch == ' ') {
+                if (!lastspace) {
+                    cleaned += ch;
+                    lastspace = true;
+                }
+            } else {
+                cleaned += ch;
+                lastspace = false;
+            }
+        }
 
-	    return cleaned;
-	}
-	
+        return cleaned;
+    }
+    
     public void execute(String query, File dbpath) {
 
         try {
-        	
-        	query=spacecleaner(query);
+            
+            query=spacecleaner(query);
             String[] parts = query.split(" ");
 
             String tablename = parts[1];
-            String set_col = parts[3];
-            String set_val = parts[4];
-            String where_col = parts[6];
-            String where_val = parts[7];
+
+            String set_part = parts[3];
+            String where_part = parts[5];
+
+            if (set_part.contains("=")) {
+                String[] set_split = set_part.split("=");
+                set_part = set_split[0] + " " + set_split[1];
+            }
+
+            if (where_part.contains("=")) {
+                String[] where_split = where_part.split("=");
+                where_part = where_split[0] + " " + where_split[1];
+            }
+
+            String[] set_parts = set_part.split(" ");
+            String[] where_parts = where_part.split(" ");
+
+            String set_col = set_parts[0];
+            String set_val = set_parts[set_parts.length-1];
+            String where_col = where_parts[0];
+            String where_val = where_parts[where_parts.length-1];
 
             String metapath = dbpath.getPath() + "\\" + tablename + ".meta.txt";
             String datapath = dbpath.getPath() + "\\" + tablename + ".data.txt";
